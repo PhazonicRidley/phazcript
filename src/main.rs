@@ -16,10 +16,8 @@ Order:
 
 mod lexer;
 pub mod reconized_symbols;
-use std::fmt::Result;
-use std::fs::{self, File};
+use std::fs::File;
 use std::io::{self, BufRead};
-use std::env::args;
 use std::io::BufReader;
 use std::vec::Vec;
 
@@ -27,7 +25,7 @@ fn main() {
    println!("Hello, World!");
    let file_contents = match read_file("a.txt") {
       Ok(ok) => ok,
-      Err(e) => panic!("An error occured with reading the file. Error: {}", e)
+      Err(e) => panic!("An error occured with reading the file.\nError: {}", e)
    };
 
    let mut lexed_file: Vec<Vec<lexer::Token>> = vec![];
