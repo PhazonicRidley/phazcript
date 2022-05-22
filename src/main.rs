@@ -13,16 +13,20 @@ Order:
 3) ???
 4) scripting language
  */
-
 mod lexer;
+//mod parser;
 pub mod reconized_symbols;
 use std::fs::File;
 use std::io::{self, BufRead};
 use std::io::BufReader;
+use std::process::exit;
 use std::vec::Vec;
+
 
 fn main() {
    println!("Hello, World!");
+   lexer::trait_test(lexer::Type::Bool(false));
+   exit(0);
    let file_contents = match read_file("a.txt") {
       Ok(ok) => ok,
       Err(e) => panic!("An error occured with reading the file.\nError: {}", e)
@@ -33,8 +37,8 @@ fn main() {
    {
       lexed_file.push(lexer::determine_tokens(&line));
    }
-   println!("{:?}", file_contents);
-   println!("{:?}", lexed_file);
+   //println!("{:?}", lexed_file);
+   
 }
 
 fn read_file(filepath: &str) -> io::Result<Vec<String>>
