@@ -1,5 +1,4 @@
 /*
-
 Notes:
 Lexer and Parser:
     - Lexer: Module to parse a "line" of script into different tokens (datatype, variable, keyword, value, operators, etc)
@@ -13,14 +12,13 @@ Order:
 3) ???
 4) scripting language
  */
-#![allow(dead_code)]
-mod lexer;
+
+ mod lexer;
 mod parser;
 pub mod reconized_symbols;
 use std::fs::File;
 use std::io::{self, BufRead};
 use std::io::BufReader;
-use std::process::exit;
 use std::vec::Vec;
 
 
@@ -35,11 +33,15 @@ fn main() {
    {
       lexed_file.push(lexer::determine_tokens(&line));
    }
-   //println!("{:?}", lexed_file[0]);
+   //println!("{:?}", lexed_file);
    parser::test_tree(&lexed_file[0]);
    
 }
 
+/**
+ * Reads a file. Takes a filepath as a str
+ * Returns an IO result of a vector of each line in the file.
+ */
 fn read_file(filepath: &str) -> io::Result<Vec<String>>
 {
    let f = File::open(filepath)?;

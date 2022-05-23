@@ -17,7 +17,7 @@ impl AST {
         if line.len() == 1 {
             return Ok(AST {value: line[0].clone(), left: None, right: None})
         }
-        for i in 0..line.len() {
+        for i in (0..line.len()).rev() {
             if let Token::Operator(_op) = line[i].clone()
             {
                 return Ok(AST {
@@ -50,6 +50,8 @@ impl AST {
             {
                 "+" => self.left.expect("error on left").evaluate()? + self.right.expect("error on right").evaluate()?,
                 "-" => self.left.expect("error on left").evaluate()? - self.right.expect("error on right").evaluate()?,
+                "*" => self.left.expect("error on left").evaluate()? * self.right.expect("error on right").evaluate()?,
+                "/" => self.left.expect("error on left").evaluate()? / self.right.expect("error on right").evaluate()?,
                 _ => panic!("Not implemented yet")
             };
             return Ok(ans)

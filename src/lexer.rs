@@ -59,6 +59,7 @@ impl DataValue {
 /**
  * Enum for different data types
  */
+// TODO: Seperate out into its own file
 pub enum Type
 {
     String(String),
@@ -99,8 +100,36 @@ impl ops::Sub for Type
     }
 }
 
+impl ops::Mul for Type
+{
+    type Output = Self;
+
+    fn mul(self, other: Self) -> Self
+    {
+        if let (Type::Numeric(first), Type::Numeric(second)) = (self, other)
+        { return Type::Numeric(first * second) }
+        else { panic!("Cannot multiply types") }
+    }
+}
+
+impl ops::Div for Type
+{
+    type Output = Self;
+
+    fn div(self, other: Self) -> Self
+    {
+        if let (Type::Numeric(first), Type::Numeric(second)) = (self, other)
+        {
+            if second == 0 { panic!("Cannot divide by zero.")}
+            return Type::Numeric(first / second)
+        }
+        else { panic!("Cannot divide types") }
+    }
+}
+
 pub fn determine_tokens(line: &str) -> Vec<Token>
 {
+    // TODO: ignore white space, split tokens
     let line_list = line.split(" ");
     let mut determined_tokens: Vec<Token> = vec![];
 
