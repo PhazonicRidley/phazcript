@@ -1,18 +1,4 @@
-// lex a line of code
-
-use std::{fmt::Debug, ops};
-
-// TODO: add keywords, variables, etc
-use crate::reconized_symbols;
-
-#[derive(Debug, Clone)]
-/**
- * A thing in the script. Right now can only be an operator or some data
- */
-pub enum Token {
-    Data(Type),
-    Operator(String),
-}
+use std::ops;
 
 #[derive(Debug, Clone)]
 /**
@@ -41,7 +27,7 @@ impl Type {
         return d_type;
     }
 
-    fn new(value: &str) -> Self {
+    pub fn new(value: &str) -> Self {
         let d_type = Type::determine(value);
         return d_type.expect("Unable to determine datatype.");
     }
@@ -98,27 +84,4 @@ impl ops::Div for Type {
             panic!("Cannot divide types")
         }
     }
-}
-
-fn parse_seperators() {}
-
-pub fn determine_tokens(line: &str) -> Vec<Token> {
-    // TODO: ignore white space, split tokens
-    let line_list = line.split(" ");
-    let mut determined_tokens: Vec<Token> = vec![];
-
-    for unparsed_token in line_list {
-        if unparsed_token.len() == 1
-            && reconized_symbols::OPERATORS.contains(&unparsed_token.chars().nth(0).unwrap())
-        {
-            determined_tokens.push(Token::Operator(String::from(unparsed_token)));
-        } else {
-            match unparsed_token.parse::<i32>() // temp thing to only save numbers 
-            {
-                Ok(_ok) => determined_tokens.push(Token::Data(Type::new(unparsed_token))),
-                Err(_e) => panic!("Not number")
-            }
-        }
-    }
-    return determined_tokens;
 }

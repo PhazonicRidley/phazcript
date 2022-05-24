@@ -1,25 +1,27 @@
 /*
-Notes:
-Lexer and Parser:
-    - Lexer: Module to parse a "line" of script into different tokens (datatype, variable, keyword, value, operators, etc)
-    - Parser: Processes an array of "tokens" that the lexer has classified and process the "grammar" of the line
-Process data:
-   - make the code, do the thing (idk how to do that yet)
+Notes and overall TODO:
+Support seperators, quotes and parentheses
+Create keyword varient in Token enum
+Support variables.
+    - syntax: int variable = 3
+    - string my_string = "my string"
+    - bool binary = true
+    - use a map to relate variable names to their literals
 
-Order:
-1) parse and have rust "understand" tokens
-2) calculator
-3) ???
-4) scripting language
+Support functions
+    - syntax: return_type function_name(int args, string more_args) {}
+    - support scopes. other maps maybe?
+Support conditionals and loops (these will be internal functions)
  */
 
 mod lexer;
 mod parser;
 pub mod reconized_symbols;
-use std::fs::File;
-use std::io::BufReader;
-use std::io::{self, BufRead};
-use std::vec::Vec;
+use std::{
+    fs::File,
+    io::{self, BufRead, BufReader},
+    vec::Vec,
+};
 
 fn main() {
     let file_contents = match read_file("a.txt") {

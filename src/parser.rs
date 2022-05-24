@@ -1,7 +1,7 @@
 // Parse lexicals (?)
-// make AST
+// make AST a trait for different types of tree
 
-use crate::lexer::{Token, Type};
+use crate::lexer::{datatype::Type, Token};
 use std::fmt::Error;
 
 #[derive(Debug)]
