@@ -10,43 +10,8 @@ use crate::reconized_symbols;
  * A thing in the script. Right now can only be an operator or some data
  */
 pub enum Token {
-    Data(DataValue),
+    Data(Type),
     Operator(String),
-}
-#[derive(Debug, Clone)]
-/**
- * A wrapper struct for data
- * Probably going to wrap each type itself and turn this thing into a trait
- */
-pub struct DataValue {
-    pub value: Type,
-    pub d_type: String,
-}
-
-impl DataValue {
-    fn determine_type(value: &String) -> Option<(Type, String)> {
-        let mut d_type: Option<(Type, String)> = None;
-        if let Ok(num) = value.parse::<i32>() {
-            d_type = Some((Type::Numeric(num), String::from("Numeric"))) // make less shit
-        } else if let Ok(c) = value.parse::<char>() {
-            d_type = Some((Type::Char(c), String::from("Char")))
-        } else if let Ok(bool) = value.parse::<bool>() {
-            d_type = Some((Type::Bool(bool), String::from("Bool")))
-        } else {
-            d_type = Some((Type::String(value.clone()), String::from("String")))
-        }
-        return d_type;
-    }
-
-    fn new(val: &str) -> DataValue {
-        let data_wrapper =
-            DataValue::determine_type(&val.to_owned()).expect("Unable to determine datatype");
-
-        return DataValue {
-            value: data_wrapper.0,
-            d_type: data_wrapper.1,
-        };
-    }
 }
 
 #[derive(Debug, Clone)]
@@ -56,9 +21,30 @@ impl DataValue {
 // TODO: Seperate out into its own file
 pub enum Type {
     String(String),
-    Char(char),
     Numeric(i32),
     Bool(bool),
+}
+
+impl Type {
+    fn determine(value: &str) -> Option<Self> {
+        let d_type: Option<Self>;
+        if let Ok(num) = value.parse::<i32>() {
+            d_type = Some(Type::Numeric(num))
+        } else if let Ok(b) = value.parse::<bool>() {
+            d_type = Some(Type::Bool(b))
+        } else {
+            d_type = Some(Type::String(value.to_owned()))
+        }
+        if !d_type.is_some() {
+            return None;
+        }
+        return d_type;
+    }
+
+    fn new(value: &str) -> Self {
+        let d_type = Type::determine(value);
+        return d_type.expect("Unable to determine datatype.");
+    }
 }
 
 impl ops::Add for Type {
@@ -67,7 +53,6 @@ impl ops::Add for Type {
     fn add(self, other: Self) -> Self {
         match (self, other) {
             (Type::Numeric(first), Type::Numeric(second)) => Type::Numeric(first + second),
-            (Type::Char(first), Type::Char(second)) => Type::String(format!("{}{}", first, second)),
             (Type::String(first), Type::String(second)) => {
                 Type::String(format!("{}{}", first, second))
             }
@@ -115,6 +100,8 @@ impl ops::Div for Type {
     }
 }
 
+fn parse_seperators() {}
+
 pub fn determine_tokens(line: &str) -> Vec<Token> {
     // TODO: ignore white space, split tokens
     let line_list = line.split(" ");
@@ -128,7 +115,7 @@ pub fn determine_tokens(line: &str) -> Vec<Token> {
         } else {
             match unparsed_token.parse::<i32>() // temp thing to only save numbers 
             {
-                Ok(_ok) => determined_tokens.push(Token::Data(DataValue::new(unparsed_token))),
+                Ok(_ok) => determined_tokens.push(Token::Data(Type::new(unparsed_token))),
                 Err(_e) => panic!("Not number")
             }
         }

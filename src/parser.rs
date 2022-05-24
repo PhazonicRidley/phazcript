@@ -36,7 +36,7 @@ impl AST {
     fn evaluate(self) -> Result<Type, Error> {
         if self.left.is_none() && self.right.is_none() {
             if let Token::Data(data) = self.value {
-                return Ok(data.value);
+                return Ok(data);
             } else {
                 return Err(Error);
             }
