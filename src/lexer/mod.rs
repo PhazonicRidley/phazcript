@@ -3,7 +3,7 @@
 use std::fmt::Debug;
 
 // TODO: add keywords, variables, etc
-use crate::reconized_symbols;
+use crate::recognized_symbols;
 pub mod datatype;
 use datatype::Type;
 #[derive(Debug, Clone)]
@@ -30,7 +30,7 @@ pub fn determine_tokens(line: &str) -> Vec<Token> {
 
     for unparsed_token in line_list {
         if unparsed_token.len() == 1
-            && reconized_symbols::OPERATORS.contains(&unparsed_token.chars().nth(0).unwrap())
+            && recognized_symbols::OPERATORS.contains(&unparsed_token.chars().nth(0).unwrap())
         {
             determined_tokens.push(Token::Operator(String::from(unparsed_token)));
         } else {

@@ -1,4 +1,4 @@
-// function to dictate whichs symbols are reconized and which aren't
+// function to dictate which symbols are reconized and which aren't
 
 pub const OPERATORS: [char; 5] = ['+', '-', '*', '/', '='];
 

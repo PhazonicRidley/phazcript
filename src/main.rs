@@ -16,7 +16,7 @@ Support conditionals and loops (these will be internal functions)
 
 mod lexer;
 mod parser;
-pub mod reconized_symbols;
+pub mod recognized_symbols;
 use std::{
     fs::File,
     io::{self, BufRead, BufReader},
